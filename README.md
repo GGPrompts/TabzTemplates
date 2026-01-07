@@ -64,6 +64,19 @@ Business: {{business_name}}
 Location: {{location}}
 ```
 
+## Component Libraries
+
+These external repos provide UI components and design inspiration that can be layered on top of starters:
+
+| Library | Content | Use Case |
+|---------|---------|----------|
+| [portfolio-style-guides](../portfolio-style-guides/) | 147 page templates + 44 UI components | SaaS, marketing, portfolio pages |
+| [TUITemplate](../TUITemplate/) | Go/Bubbletea starters | Terminal UI applications |
+
+**Note:** These are reference libraries, not beads starters. Copy components as needed during your build.
+
+---
+
 ## Roadmap
 
 - [ ] `cli-tool` - Command-line tool with tests
