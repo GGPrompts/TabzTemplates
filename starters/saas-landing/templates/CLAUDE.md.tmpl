@@ -1,0 +1,143 @@
+# {{business_name}} - Automated SaaS Build
+
+## Demo Overview
+
+This is a **fully automated demonstration** of Claude Code's parallel execution capabilities. The goal: build a complete, production-quality SaaS landing page for "{{business_name}}" - a {{location}} {{industry}} - in approximately **15 minutes** with minimal human intervention.
+
+### What Makes This Impressive
+
+- **Massive Parallelization**: The conductor orchestrates 4-5 parallel Claude workers simultaneously
+- **Opus Subagents**: Each worker runs Claude Opus for maximum code quality
+- **Wave-Based Execution**: Issues organized into dependency waves for optimal parallel throughput
+- **Real Browser Automation**: TabzChrome spawns terminals and manages worker sessions
+- **Beads Issue Tracking**: All work tracked in real-time via the bd issue system
+
+---
+
+## Demo Kickoff
+
+When the user wants to start, Claude should:
+
+1. Check `bd ready` to see the pre-planned backlog
+2. Explain the wave-based parallel execution strategy
+3. Launch `/conductor:bd-swarm-auto` to begin autonomous parallel execution
+
+---
+
+## Architecture: Conductor + Workers
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         CONDUCTOR                                │
+│  (This session - orchestrates everything)                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐       │
+│   │ Worker 1 │  │ Worker 2 │  │ Worker 3 │  │ Worker 4 │  ...  │
+│   │ (Opus)   │  │ (Opus)   │  │ (Opus)   │  │ (Opus)   │       │
+│   └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘       │
+│        │             │             │             │               │
+│   Scaffolding   Design Sys    Layout        Assets              │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Issue Backlog (19 Issues, 5 Waves)
+
+### Wave 0 - Assets (Parallel with Wave 1)
+| ID | Title | Notes |
+|----|-------|-------|
+| {{prefix}}-001 | Generate {{business_name}} branded assets via TabzArtist | DALL-E image generation |
+
+### Wave 1 - Foundation (3 parallel workers)
+| ID | Title | Blocks |
+|----|-------|--------|
+| {{prefix}}-002 | Project scaffolding - Next.js + Tailwind + shadcn/ui | 9 issues |
+| {{prefix}}-003 | Design system - {{business_name}} brand colors ({{primary_color}}) | 10 issues |
+| {{prefix}}-004 | Layout shell - RootLayout with providers | 10 issues |
+
+### Wave 2 - UI Components (batched across 2-3 rounds)
+| ID | Title | Type |
+|----|-------|------|
+| {{prefix}}-005 | Header - {{business_name}} navigation | ui |
+| {{prefix}}-006 | Hero section - main CTA | ui |
+| {{prefix}}-007 | Features grid - service highlights | ui |
+| {{prefix}}-008 | Pricing section - Service tiers | ui |
+| {{prefix}}-009 | Testimonials - Happy customers | ui |
+| {{prefix}}-010 | Footer - contact and links | ui |
+| {{prefix}}-011 | Dashboard page 1 | dashboard |
+| {{prefix}}-012 | Dashboard page 2 | dashboard |
+| {{prefix}}-013 | Dashboard page 3 | dashboard |
+| {{prefix}}-014 | Fix button contrast (a11y bug) | bug |
+
+### Wave 3 - Polish (4 parallel workers)
+| ID | Title |
+|----|-------|
+| {{prefix}}-015 | Dark mode support |
+| {{prefix}}-016 | Animations and micro-interactions |
+| {{prefix}}-017 | Mobile responsive polish |
+| {{prefix}}-018 | SEO and metadata |
+
+### Wave 4 - QA
+| ID | Title |
+|----|-------|
+| {{prefix}}-019 | QA Checkpoint - visual review |
+
+---
+
+## Execution Strategy
+
+### For Maximum Parallelization
+
+1. **Use `/conductor:bd-swarm-auto`** - Fully autonomous backlog completion
+2. **Or Manual Wave Control with `/conductor:bd-swarm`** - More control over worker count
+
+---
+
+## Beads Issue Tracking
+
+```bash
+bd ready              # Find available work
+bd show <id>          # View issue details
+bd close <id>         # Complete work
+bd sync               # Sync with git
+```
+
+---
+
+## Skills & Tools Available
+
+### Core Skills
+- `tailwind-v4-shadcn` - Tailwind CSS v4 + shadcn/ui components
+- `web-frameworks` - Next.js App Router, Server Components
+- `frontend-design` - Production-grade UI implementation
+
+### MCP Servers
+- `shadcn` - Component installation
+- `tabz` - Browser automation
+- `beads` - Issue tracking
+
+---
+
+## Brand: {{business_name}}
+
+- **Business**: {{industry}} in {{location}}
+- **Tagline**: "{{tagline}}"
+- **Colors**: {{primary_color}} primary
+- **Service Areas**: {{service_areas}}
+- **Phone**: {{phone}}
+- **Features**: {{features}}
+
+---
+
+## Success Criteria
+
+- [ ] All 19 issues closed
+- [ ] Next.js app builds without errors
+- [ ] Landing page renders with all sections
+- [ ] 3 dashboard pages functional
+- [ ] Dark mode working
+- [ ] Mobile responsive
+- [ ] All commits pushed to remote

@@ -1,0 +1,66 @@
+name: saas-landing
+description: Modern SaaS landing page with dashboards - Next.js + shadcn + Tailwind
+version: 1.0.0
+author: GGPrompts
+
+# Variables that users fill in
+variables:
+  business_name:
+    prompt: "Business name"
+    example: "Sunshine Rides"
+  tagline:
+    prompt: "Company tagline"
+    example: "Your Journey, Our Priority"
+  industry:
+    prompt: "Industry/service type"
+    example: "Transportation service"
+  location:
+    prompt: "Primary location"
+    example: "Colorado"
+  primary_color:
+    prompt: "Primary brand color"
+    example: "orange"
+    options: [orange, blue, green, purple, red, teal]
+  service_areas:
+    prompt: "Service areas (comma-separated)"
+    example: "Denver, Boulder, Fort Collins"
+  phone:
+    prompt: "Contact phone"
+    example: "970-555-0199"
+  features:
+    prompt: "Key features (comma-separated)"
+    example: "Wheelchair accessible, Medical transport, Airport shuttles"
+
+# Tech stack
+stack:
+  framework: next.js
+  styling: tailwind-v4
+  components: shadcn-ui
+  language: typescript
+
+# Required plugins
+plugins:
+  - tabz-chrome:conductor
+  - tabz-chrome:tabz-mcp
+  - claudekit-skills:web-dev-tools
+  - claudekit-skills:ui-styling
+
+# MCP servers
+mcp_servers:
+  - shadcn
+  - tabz
+  - beads
+
+# Workflow configuration
+workflow:
+  model: opus
+  review: code  # code | codex | skip
+  tests: true
+  parallel_workers: 4
+
+# Files to generate
+generates:
+  - CLAUDE.md
+  - AGENTS.md
+  - .beads/issues.jsonl
+  - .mcp.json
