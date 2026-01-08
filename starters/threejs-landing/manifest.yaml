@@ -68,4 +68,5 @@ generates:
   - CLAUDE.md
   - AGENTS.md
   - .beads/issues.jsonl
+  - .beads/PRIME.md
   - .mcp.json

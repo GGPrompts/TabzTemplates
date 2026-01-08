@@ -105,6 +105,22 @@ bd close <id>         # Complete work
 bd sync               # Sync with git
 ```
 
+### Completion Protocol
+
+**Before marking work complete**, run the conductor pipeline:
+
+```bash
+/conductor:verify-build      # Build and check for errors
+/conductor:code-review       # Opus review with auto-fix
+/conductor:commit-changes    # Stage + commit
+/conductor:close-issue <id>  # Close beads issue
+bd sync && git push          # Push everything
+```
+
+Or use the full pipeline: `/conductor:worker-done <id>`
+
+See `.beads/PRIME.md` for detailed workflow documentation.
+
 ---
 
 ## Skills & Tools Available

@@ -1,36 +1,30 @@
 # Agent Instructions
 
-This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
+This project uses **bd** (beads) for issue tracking. Run `bd prime` to load workflow context.
 
 ## Quick Reference
 
 ```bash
 bd ready              # Find available work
 bd show <id>          # View issue details
-bd update <id> --status in_progress  # Claim work
+bd update <id> --status=in_progress  # Claim work
 bd close <id>         # Complete work
 bd sync               # Sync with git
 ```
 
-## Landing the Plane (Session Completion)
+## Session Completion Protocol
 
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
+**When ending a work session**, use the conductor completion pipeline:
 
-**MANDATORY WORKFLOW:**
+```bash
+/conductor:verify-build      # Build and check for errors
+/conductor:code-review       # Opus review with auto-fix
+/conductor:commit-changes    # Stage + commit
+/conductor:close-issue <id>  # Close beads issue
+bd sync && git push          # Push everything
+```
 
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
-   ```bash
-   git pull --rebase
-   bd sync
-   git push
-   git status  # MUST show "up to date with origin"
-   ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
+Or use the full pipeline: `/conductor:worker-done <id>`
 
 **CRITICAL RULES:**
 - Work is NOT complete until `git push` succeeds
@@ -38,3 +32,10 @@ bd sync               # Sync with git
 - NEVER say "ready to push when you are" - YOU must push
 - If push fails, resolve and retry until it succeeds
 
+## For More Details
+
+See `.beads/PRIME.md` for complete workflow documentation including:
+- All `bd` commands
+- Dependency management
+- Multiple completion pipeline options
+- Common workflow patterns
