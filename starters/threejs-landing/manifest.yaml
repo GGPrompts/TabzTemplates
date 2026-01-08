@@ -1,0 +1,71 @@
+name: threejs-landing
+description: Interactive 3D landing page with React Three Fiber, scroll animations, and immersive experiences
+version: 1.0.0
+author: GGPrompts
+
+# Variables that users fill in
+variables:
+  business_name:
+    prompt: "Business name"
+    example: "Nebula Labs"
+  tagline:
+    prompt: "Company tagline"
+    example: "Building the Future of Web3D"
+  industry:
+    prompt: "Industry/product type"
+    example: "Creative technology studio"
+  primary_color:
+    prompt: "Primary brand color"
+    example: "purple"
+    options: [purple, blue, cyan, orange, green, pink]
+  scene_style:
+    prompt: "3D scene style"
+    example: "particles"
+    options: [particles, geometric, abstract, product, environment]
+  scroll_sections:
+    prompt: "Number of scroll-animated 3D sections"
+    example: "3"
+    options: ["2", "3", "4", "5"]
+  features:
+    prompt: "Key features/services (comma-separated)"
+    example: "3D Visualization, Interactive Experiences, WebGL Development"
+  cta_text:
+    prompt: "Primary call-to-action text"
+    example: "Start Your Project"
+
+# Tech stack
+stack:
+  framework: next.js
+  rendering: react-three-fiber
+  graphics: three.js
+  styling: tailwind-v4
+  components: shadcn-ui
+  animation: gsap
+  language: typescript
+
+# Required plugins
+plugins:
+  - tabz-chrome:conductor
+  - tabz-chrome:tabz-mcp
+  - claudekit-skills:web-dev-tools
+  - claudekit-skills:ui-styling
+
+# MCP servers
+mcp_servers:
+  - shadcn
+  - tabz
+  - beads
+
+# Workflow configuration
+workflow:
+  model: opus
+  review: code
+  tests: true
+  parallel_workers: 4
+
+# Files to generate
+generates:
+  - CLAUDE.md
+  - AGENTS.md
+  - .beads/issues.jsonl
+  - .mcp.json

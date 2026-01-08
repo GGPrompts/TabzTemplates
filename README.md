@@ -7,6 +7,7 @@ Reusable project starter templates for Claude Code with pre-configured workflows
 | Starter | Description | Build Time |
 |---------|-------------|------------|
 | [saas-landing](starters/saas-landing/) | SaaS landing page with dashboards | ~15 min |
+| [threejs-landing](starters/threejs-landing/) | Interactive 3D landing with R3F + scroll animations | ~20 min |
 
 ## Usage
 
