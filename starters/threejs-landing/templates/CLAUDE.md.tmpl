@@ -92,17 +92,22 @@ This project uses beads for issue tracking. Run `bd ready` to see available task
 
 #### Completion Protocol
 
-**Before marking work complete**, run the conductor pipeline:
-
+**Standalone session** (you're the only one working):
 ```bash
-/conductor:verify-build      # Build and check for errors
-/conductor:code-review       # Opus review with auto-fix
-/conductor:commit-changes    # Stage + commit
-/conductor:close-issue <id>  # Close beads issue
-bd sync && git push          # Push everything
+/conductor:bdw-verify-build      # Build and check for errors
+/conductor:bdw-code-review       # Opus review with auto-fix
+/conductor:bdw-commit-changes    # Stage + commit
+/conductor:bdw-close-issue <id>  # Close beads issue
+bd sync && git push              # Push everything
 ```
 
-Or use the full pipeline: `/conductor:worker-done <id>`
+Or use the full pipeline: `/conductor:bdw-worker-done <id>` then `bd sync && git push`
+
+**BD-Swarm worker** (spawned by conductor):
+```bash
+/conductor:bdw-worker-done <id>  # verify → test → commit → close → NOTIFY
+# STOP HERE - conductor handles merge, review, and push
+```
 
 See `.beads/PRIME.md` for detailed workflow documentation.
 
@@ -197,23 +202,22 @@ Before marking issues complete:
 
 | Skill | When to Use |
 |-------|-------------|
-| `r3f-fundamentals` | Canvas setup, useFrame, useThree, R3F patterns |
-| `r3f-materials` | Custom shaders, uniforms, drei shaderMaterial |
-| `threejs-builder` | Vanilla Three.js scenes, WebGPU renderer |
-| `building-3d-graphics` | Advanced: instancing, physics, complex scenes |
-| `3d-composition-visualization` | Interactive visualizations, drill-down views |
+| `/frontend:ui-styling` | shadcn/ui components, Tailwind styling |
+| `/frontend:web-frameworks` | Next.js App Router, Server Components |
+| `/conductor:tabz-mcp` | Browser automation, screenshots, console logs |
 
-**Trigger with:** "use the r3f-fundamentals skill for scroll animations"
+**Invoke skills directly:** `/frontend:ui-styling` (not "use the X skill")
 
 ### Slash Commands
 
 | Command | Purpose |
 |---------|---------|
-| `/conductor:bd-work` | Pick top beads issue and start working |
-| `/conductor:bd-swarm-auto` | Fully autonomous parallel issue processing |
-| `/conductor:worker-done <id>` | Full completion pipeline |
-| `/conductor:code-review` | Autonomous code review |
-| `/conductor:verify-build` | Build and check for errors |
+| `/conductor:bd-start` | Grab ready issue and start working (standalone) |
+| `/conductor:bd-work` | Spawn a worker to implement an issue |
+| `/conductor:bdc-swarm-auto` | Fully autonomous parallel issue processing |
+| `/conductor:bdw-worker-done <id>` | Full completion pipeline |
+| `/conductor:bdw-code-review` | Opus code review with auto-fix |
+| `/conductor:bdw-verify-build` | Build and check for errors |
 
 ### Autonomous Debugging
 

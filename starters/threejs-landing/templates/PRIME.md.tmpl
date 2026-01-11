@@ -5,42 +5,48 @@
 
 # SESSION CLOSE PROTOCOL
 
-**CRITICAL**: Before saying "done" or "complete", run the conductor completion pipeline:
+**CRITICAL**: Before saying "done" or "complete", run the appropriate completion pipeline.
 
-## Standard Completion (with code review)
+## Standalone Work (single session, you're the only one working)
+
+### Standard Completion (with code review)
 ```bash
-/conductor:verify-build      # Build and check for errors
-/conductor:run-tests         # Run tests if available
-/conductor:code-review       # Opus review with auto-fix (high confidence)
-/conductor:commit-changes    # Stage + commit with conventional format
-/conductor:close-issue <id>  # Close the beads issue
-bd sync && git push          # Push everything
+/conductor:bdw-verify-build      # Build and check for errors
+/conductor:bdw-run-tests         # Run tests if available
+/conductor:bdw-code-review       # Opus review with auto-fix (high confidence)
+/conductor:bdw-commit-changes    # Stage + commit with conventional format
+/conductor:bdw-close-issue <id>  # Close the beads issue
+bd sync && git push              # Push everything
 ```
 
-## Quick Completion (skip review, for trivial changes)
+### Quick Completion (skip review, for trivial changes)
 ```bash
-/conductor:verify-build
-/conductor:commit-changes
-/conductor:close-issue <id>
+/conductor:bdw-verify-build
+/conductor:bdw-commit-changes
+/conductor:bdw-close-issue <id>
 bd sync && git push
 ```
 
-## Cost-Effective Review (use Codex instead of Opus)
+### Cost-Effective Review (use Codex instead of Opus)
 ```bash
-/conductor:verify-build
-/conductor:codex-review      # Cheaper read-only review via OpenAI Codex
-/conductor:commit-changes
-/conductor:close-issue <id>
+/conductor:bdw-verify-build
+/conductor:bdw-codex-review      # Cheaper read-only review via OpenAI Codex
+/conductor:bdw-commit-changes
+/conductor:bdw-close-issue <id>
 bd sync && git push
 ```
 
-## Full Pipeline (for significant features)
+## BD-Swarm Worker (spawned by /conductor:bd-swarm)
+
+If you were spawned by `/conductor:bd-swarm`, use worker-done and DO NOT push:
 ```bash
-/conductor:worker-done <id>  # Runs: verify → test → review → commit → close
-bd sync && git push
+/conductor:bdw-worker-done <id>  # Runs: verify → test → commit → close → NOTIFY
+# STOP HERE - conductor handles merge, review, and push
 ```
 
-**NEVER skip verification.** Work is not done until pushed.
+**Workers skip code review** - the conductor runs unified review after merging all branches.
+
+**NEVER skip verification.** Standalone work is not done until pushed.
 
 ## Core Rules
 - Track strategic work in beads (multi-session, dependencies, discovered work)
@@ -82,21 +88,26 @@ bd sync && git push
 
 ## Common Workflows
 
-**Starting work:**
+**Starting work (standalone):**
 ```bash
-bd ready           # Find available work
-bd show <id>       # Review issue details
+/conductor:bd-start    # Grab top ready issue and start working
+# Or manually:
+bd ready               # Find available work
+bd show <id>           # Review issue details
 bd update <id> --status=in_progress  # Claim it
 ```
 
-**Completing work:**
+**Completing work (standalone):**
 ```bash
-# Use conductor pipeline (recommended)
-/conductor:worker-done <id>  # Full pipeline: build → test → review → commit → close
+# Full pipeline with review
+/conductor:bdw-verify-build
+/conductor:bdw-code-review
+/conductor:bdw-commit-changes
+/conductor:bdw-close-issue <id>
+bd sync && git push
 
-# Or run steps individually for more control
-/conductor:verify-build && /conductor:code-review && /conductor:commit-changes
-/conductor:close-issue <id>
+# Or use worker-done for quick path (skips review):
+/conductor:bdw-worker-done <id>  # verify → test → commit → close
 bd sync && git push
 ```
 
@@ -107,3 +118,60 @@ bd create --title="Implement feature X" --type=feature
 bd create --title="Write tests for X" --type=task
 bd dep add beads-yyy beads-xxx  # Tests depend on Feature (Feature blocks tests)
 ```
+
+## Conductor Commands - Prefix Taxonomy
+
+Commands use prefixes to indicate their purpose:
+- `bd-*` = User entry points (you invoke these)
+- `bdc-*` = Conductor internal (orchestration)
+- `bdw-*` = Worker steps (execution pipeline)
+
+### User Entry Points (bd-)
+| Command | Purpose |
+|---------|---------|
+| `/conductor:bd-start` | Grab a ready issue and start working (standalone) |
+| `/conductor:bd-work` | Spawn a worker to implement an issue |
+| `/conductor:bd-plan` | Prepare backlog: refine, enhance prompts, match skills |
+| `/conductor:bd-swarm` | Multi-session: spawn parallel workers |
+| `/conductor:bd-status` | View issue state (open, blocked, ready) |
+
+### Conductor Internal (bdc-)
+| Command | Purpose |
+|---------|---------|
+| `/conductor:bdc-swarm-auto` | Autonomous waves until backlog empty |
+| `/conductor:bdc-wave-done` | Merge branches, unified review, cleanup |
+
+### Worker Steps (bdw-)
+| Command | Purpose |
+|---------|---------|
+| `/conductor:bdw-verify-build` | Run build and report errors |
+| `/conductor:bdw-run-tests` | Run tests if available |
+| `/conductor:bdw-code-review` | Opus code review with auto-fix |
+| `/conductor:bdw-codex-review` | Cost-effective read-only review via OpenAI Codex |
+| `/conductor:bdw-commit-changes` | Stage + commit with conventional format |
+| `/conductor:bdw-close-issue` | Close a beads issue with completion reason |
+| `/conductor:bdw-worker-done` | Full completion pipeline: verify → test → commit → close → notify |
+
+## Terminal Communication (for workers)
+
+When sending multi-line prompts or notifications via tmux, use `load-buffer` + `paste-buffer` to avoid terminal corruption:
+
+```bash
+# WRONG: Can trigger copy mode with special chars
+tmux send-keys -t "$SESSION" -l "$LONG_PROMPT"
+
+# RIGHT: Reliable for multi-line content
+printf '%s' "$PROMPT" | tmux load-buffer -
+tmux paste-buffer -t "$SESSION"
+sleep 0.3
+tmux send-keys -t "$SESSION" C-m
+```
+
+**Short one-liners** (like notifications) can still use `send-keys -l`:
+```bash
+tmux send-keys -t "$CONDUCTOR_SESSION" -l "DONE: issue-id"
+sleep 0.5
+tmux send-keys -t "$CONDUCTOR_SESSION" C-m
+```
+
+For full tmux patterns, see `/conductor:terminal-tools`.
