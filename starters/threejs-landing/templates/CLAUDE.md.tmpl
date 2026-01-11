@@ -198,15 +198,21 @@ Before marking issues complete:
 
 ## AI Assistant Notes
 
-### Skills for 3D Development
+### Finding Available Skills
 
-| Skill | When to Use |
-|-------|-------------|
-| `/frontend:ui-styling` | shadcn/ui components, Tailwind styling |
-| `/frontend:web-frameworks` | Next.js App Router, Server Components |
-| `/conductor:tabz-mcp` | Browser automation, screenshots, console logs |
+Skills depend on installed plugins. Discover what's available:
 
-**Invoke skills directly:** `/frontend:ui-styling` (not "use the X skill")
+```bash
+# List all available skills
+match-skills.sh --available-full
+
+# Match skills to keywords from your task
+match-skills.sh --verify "react three fiber 3d animation"
+```
+
+Or use `/conductor:bd-plan` → "Match Skills" to automatically find and persist skills for each issue.
+
+**Invoke skills with full path:** `/plugin:skill-name` (not "use the X skill")
 
 ### Slash Commands
 

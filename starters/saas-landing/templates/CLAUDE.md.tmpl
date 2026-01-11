@@ -130,18 +130,24 @@ See `.beads/PRIME.md` for detailed workflow documentation.
 
 ## Skills & Tools Available
 
-### Core Skills (invoke directly)
-| Skill | When to Use |
-|-------|-------------|
-| `/frontend:ui-styling` | shadcn/ui components, Tailwind styling |
-| `/frontend:web-frameworks` | Next.js App Router, Server Components |
-| `/frontend:frontend-design` | Production-grade UI implementation |
-| `/conductor:tabz-mcp` | Browser automation, screenshots, console logs |
+### Finding Available Skills
 
-**Invoke skills directly:** `/frontend:ui-styling` (not "use the X skill")
+Skills depend on installed plugins. Discover what's available:
+
+```bash
+# List all available skills
+match-skills.sh --available-full
+
+# Match skills to keywords from your task
+match-skills.sh --verify "react component styling dashboard"
+```
+
+Or use `/conductor:bd-plan` → "Match Skills" to automatically find and persist skills for each issue.
+
+**Invoke skills with full path:** `/plugin:skill-name` (e.g., `/frontend:ui-styling`)
 
 ### MCP Servers
-- `shadcn` - Component installation
+- `shadcn` - Component installation (if configured)
 - `tabz` - Browser automation, visual QA
 - `beads` - Issue tracking
 
