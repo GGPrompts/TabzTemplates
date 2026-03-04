@@ -1,15 +1,15 @@
 # Agent Instructions
 
-This project uses **bd** (beads) for issue tracking. Run `bd prime` to load workflow context.
+This project uses **ggbd** (beads) for issue tracking. Run `ggbd prime` to load workflow context.
 
 ## Quick Reference
 
 ```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --status=in_progress  # Claim work
-bd close <id>         # Complete work
-bd sync               # Sync with git
+ggbd ready              # Find available work
+ggbd show <id>          # View issue details
+ggbd update <id> --status=in_progress  # Claim work
+ggbd close <id>         # Complete work
+# Supabase auto-syncs (no manual sync needed)
 ```
 
 ## Session Completion Protocol
@@ -21,7 +21,7 @@ bd sync               # Sync with git
 /conductor:code-review       # Opus review with auto-fix
 /conductor:commit-changes    # Stage + commit
 /conductor:close-issue <id>  # Close beads issue
-bd sync && git push          # Push everything
+# Supabase auto-syncs (no manual sync needed)
 ```
 
 Or use the full pipeline: `/conductor:worker-done <id>`
@@ -35,7 +35,7 @@ Or use the full pipeline: `/conductor:worker-done <id>`
 ## For More Details
 
 See `.beads/PRIME.md` for complete workflow documentation including:
-- All `bd` commands
+- All `ggbd` commands
 - Dependency management
 - Multiple completion pipeline options
 - Common workflow patterns
